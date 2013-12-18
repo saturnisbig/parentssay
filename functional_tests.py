@@ -2,6 +2,7 @@
 # _*_ coding: utf-8 _*_
 
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 # ----------- time spend ---------------
@@ -48,7 +49,7 @@ class ParentsVisitor(unittest.TestCase):
         # a dropdown select element.
         input_select = self.browser.find_element_by_id('id_role')
         options = input_select.find_elements_by_tag_name('option')
-        print([o.text for o in input_select.options])
+        print([o.text for o in options])
         self.assertEqual(
             options[0].text,
             '父'
@@ -57,17 +58,20 @@ class ParentsVisitor(unittest.TestCase):
             options[1].text,
             '母'
         )
-        input_child_name = self.find_element_by_id('id_child_name')
+        input_child_name = self.browser.find_element_by_id('id_child_name')
         self.assertEqual(
-            input_child_name.text,
-            'littletp'
+            input_child_name.get_attribute('placeholder'),
+            '输入宝宝的用户名'
         )
         # Teddy输入了今天相对宝宝说的话，blabla...，并@littleteddy后点击提交，
         input_box.send_keys('blabla...')
         input_select.send_keys('父')
+        input_child_name.send_keys('littletp')
+        input_box.send_keys(Keys.ENTER)
+        
         
         # 网站提示成功提交，并显示提交的内容
-        table = self.browser.find_element_by_id('id_content_table')
+        table = self.browser.find_element_by_id('id_content_list')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(
             'blabla...',

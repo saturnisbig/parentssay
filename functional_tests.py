@@ -1,10 +1,15 @@
+#!/usr/bin/env python
+# _*_ coding: utf-8 _*_
+
 from selenium import webdriver
 import unittest
 
 # ----------- time spend ---------------
-# 2013-12-13 18:48:00 2013-12-13 19:05:29 
-# 2013-12-14 15:26:46 2013-12-14 15:31:08 
-# 2013-12-14 23:13:39 
+# 2013-12-13 18:48:00 2013-12-13 19:05:29
+# 2013-12-14 15:26:46 2013-12-14 15:31:08
+# 2013-12-14 23:13:39 2013-12-14 23:42:43
+# 2013-12-18 12:35:11 2013-12-18 13:07:15
+# 2013-12-18 21:31:05 
 # --------------------------------------
 
 # 在确定怀上孩子的第一天，夫妻双方约定每天对自己的宝宝说一句话。
@@ -30,13 +35,44 @@ class ParentsVisitor(unittest.TestCase):
         self.browser.get("http://localhost:8000")
         #assert 'ParentsSay' in browser.title
         self.assertIn('ParentsSay', self.browser.title)
-        
-        
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('ParentsSay', header_text)
+
         # 网站提供了一个文本输入框，供输入
-        
+        # a textarea element.
+        input_box = self.browser.find_element_by_id('id_new_content')
+        self.assertEqual(
+            input_box.get_attribute('placeholder'),
+            '输入你想对宝宝说的话'
+        )
+        # a dropdown select element.
+        input_select = self.browser.find_element_by_id('id_role')
+        options = input_select.find_elements_by_tag_name('option')
+        print([o.text for o in input_select.options])
+        self.assertEqual(
+            options[0].text,
+            '父'
+        )
+        self.assertEqual(
+            options[1].text,
+            '母'
+        )
+        input_child_name = self.find_element_by_id('id_child_name')
+        self.assertEqual(
+            input_child_name.text,
+            'littletp'
+        )
         # Teddy输入了今天相对宝宝说的话，blabla...，并@littleteddy后点击提交，
+        input_box.send_keys('blabla...')
+        input_select.send_keys('父')
         
         # 网站提示成功提交，并显示提交的内容
+        table = self.browser.find_element_by_id('id_content_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(
+            'blabla...',
+            [row.text for row in rows]
+        )
         
         # Teddy关闭了浏览器
         self.fail('Finish the test.')

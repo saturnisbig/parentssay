@@ -22,4 +22,22 @@ class HomePageTest(TestCase):
         #print(response.content)
         #self.assertIn(b'<title>ParentsSay</title>', response.content)
         #self.assertTrue(response.content.strip().endswith(b'</html>'))
+    def test_home_page_can_save_a_POST_request(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['parents_content'] = 'I love you littletp.'
+        request.POST['role'] = '父'
+        request.POST['baby_name'] = 'littletp'
+
+        response = home_page(request)
+
+        self.assertIn('2013-12-18 父:I love you littletp.@littletp', 
+                      response.content.decode())
+        expected_html = render_to_string(
+            'home.html', {
+                'new_content_text':
+                '2013-12-18 父:I love you littletp.@littletp'
+            }
+        )
+        self.assertEqual(response.content.decode(), expected_html)
 

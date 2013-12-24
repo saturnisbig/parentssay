@@ -1,2 +1,5 @@
 __pycache__
 *.pyc[o]
+*.md
+*.vim
+*.sqlite3

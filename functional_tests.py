@@ -5,21 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
 
-# ----------- time spend ---------------
-# 2013-12-13 18:48:00 2013-12-13 19:05:29
-# 2013-12-14 15:26:46 2013-12-14 15:31:08
-# 2013-12-14 23:13:39 2013-12-14 23:42:43
-# 2013-12-18 12:35:11 2013-12-18 13:07:15
-# 2013-12-18 21:31:05 
-# --------------------------------------
-
-# 在确定怀上孩子的第一天，夫妻双方约定每天对自己的宝宝说一句话。
-# Teddy 现在是一名准爸爸，每天都会将相对宝宝说的话记在本子上。
-# Teddy想是否有这样一个应用，供夫妻使用，准爸爸、准妈妈每天分别
-# 将想对宝宝说的话贴到网上，彼此不能看见对方对宝宝说的话，等宝宝
-# 出生后，可以让宝宝自己上去看。
-# 父母需要注册、登录，需要为宝宝注册帐号(查看历史记录)
-## 父母不用注册、登录，只需在写完的句子后面@小孩的帐号即可。
 
 class ParentsVisitor(unittest.TestCase):
     """ test the behavior and state when parents visit this website """
@@ -67,14 +52,14 @@ class ParentsVisitor(unittest.TestCase):
         input_box.send_keys('blabla...')
         input_select.send_keys('父')
         input_child_name.send_keys('littletp')
-        input_box.send_keys(Keys.ENTER)
+        input_child_name.send_keys(Keys.ENTER)
         
         
         # 网站提示成功提交，并显示提交的内容
         table = self.browser.find_element_by_id('id_content_list')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(
-            'blabla...',
+            '2013-12-18 父: blabla...@littletp',
             [row.text for row in rows]
         )
         

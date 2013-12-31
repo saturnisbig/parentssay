@@ -6,22 +6,19 @@
     <h1>Say Something To Your Baby</h1>
 
     <form method="POST">
-        <textarea name="parents_content" id="id_new_content" rows="8" cols="40"
+        <textarea name="parents_content" id="id_new_entry" rows="8" cols="40"
             placeholder="输入你想对宝宝说的话">
         </textarea>
-        <select id="id_role" name="role">
-            <option value="父">父</option>
-            <option value="母">母</option>
-        </select>
-        @
-        <input name="baby_name" type="text" id="id_child_name" placeholder="输入宝宝的用户名">
+        <input type="submit" name="submit" id="id_submit" value="提交" />
         {% csrf_token %}
     </form>
 
-    <table id="id_content_list">
+    <table id="id_entry_list">
+        {% for entry in entries %}
         <tr>
-            <td>{{ new_content_text }}</td>
+            <td>{{ entry.what }}</td>
         </tr>
+        {% endfor %}
     </table>
 
 </body>
